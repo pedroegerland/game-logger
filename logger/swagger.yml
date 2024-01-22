@@ -1,0 +1,1222 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Logger Service"
+  },
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "tags": [
+    {
+      "name": "Game Information"
+    },
+    {
+      "name": "Global Players Ranking"
+    }
+  ],
+  "paths": {
+    "/games": {
+      "get": {
+        "tags": [
+          "Game Information"
+        ],
+        "summary": "List games information",
+        "description": "list games information, each game will contains means of death count, kill by players, total kills and players list",
+        "operationId": "listGamesInformation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "size",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 50,
+            "description": "Page size limit of games returned (min = 0, max = 50)"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "description": "The page number of games to be returned, where if missing number will return without pagination, page=0 will return the first page and page=-1 will disable pagination"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "kills_by_means": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "integer"
+                        }
+                      },
+                      "kills": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "integer"
+                        }
+                      },
+                      "players": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "/games/id": {
+      "get": {
+        "tags": [
+          "Game Information"
+        ],
+        "summary": "Get game information",
+        "description": "get game information, game will contains means of death count, kill by players, total kills and players list",
+        "operationId": "getGameInformation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "kills_by_means": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                },
+                "kills": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                },
+                "players": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "/games/ranking": {
+      "get": {
+        "tags": [
+          "Global Players Ranking"
+        ],
+        "summary": "Get Global Players Ranking",
+        "description": "list global players ranking, ordered by kill",
+        "operationId": "listPlayersRanking",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "players": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "reason": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          }
+                        },
+                        "example": [
+                          {
+                            "field": "id",
+                            "content": "ABC"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "title",
+                "status",
+                "details"
+              ],
+              "example": [
+                {
+                  "type": "https://traive.com/problems/invalid-argument",
+                  "title": "Something is wrong in the request body.",
+                  "status": "INVALID_ARGUMENT",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/internal-server-error",
+                  "title": "The server encountered an error and could not complete your request.",
+                  "status": "REQUEST_FAILED",
+                  "details": "#/definitions/ErrorDetail"
+                },
+                {
+                  "type": "https://traive.com/problems/not-found",
+                  "title": "The resource does not exist.",
+                  "status": "RESOURCE_NOT_FOUND",
+                  "details": "#/definitions/ErrorDetail"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GameInformation": {
+      "type": "object",
+      "properties": {
+        "kills_by_means": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "kills": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "players": {
+          "type": "array"
+        }
+      }
+    },
+    "ListGameInformation": {
+      "properties": {
+        "items": {
+          "type": "array",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "kills_by_means": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer"
+                }
+              },
+              "kills": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer"
+                }
+              },
+              "players": {
+                "type": "array"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PlayersRanking": {
+      "type": "object",
+      "properties": {
+        "players": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "example": [
+                  {
+                    "field": "id",
+                    "content": "ABC"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "details"
+      ],
+      "example": [
+        {
+          "type": "https://traive.com/problems/invalid-argument",
+          "title": "Something is wrong in the request body.",
+          "status": "INVALID_ARGUMENT",
+          "details": "#/definitions/ErrorDetail"
+        },
+        {
+          "type": "https://traive.com/problems/internal-server-error",
+          "title": "The server encountered an error and could not complete your request.",
+          "status": "REQUEST_FAILED",
+          "details": "#/definitions/ErrorDetail"
+        },
+        {
+          "type": "https://traive.com/problems/not-found",
+          "title": "The resource does not exist.",
+          "status": "RESOURCE_NOT_FOUND",
+          "details": "#/definitions/ErrorDetail"
+        }
+      ]
+    },
+    "ErrorDetail": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            }
+          },
+          "example": [
+            {
+              "field": "id",
+              "content": "ABC"
+            }
+          ]
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "ErrorDetailMetadata": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        }
+      },
+      "example": [
+        {
+          "field": "id",
+          "content": "ABC"
+        }
+      ]
+    }
+  }
+}
